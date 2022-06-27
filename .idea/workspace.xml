@@ -9,23 +9,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9c8f6c6-0f71-4f37-94f9-67779673197f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Comment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/MongoDBComment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/MongoDBTopic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Topic.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/bjk.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/fb.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/goz.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/topicitem.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/topics.jsp" afterDir="false" />
+    <list default="true" id="c9c8f6c6-0f71-4f37-94f9-67779673197f" name="Changes" comment="Initial Commit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/insertServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/MongoDBComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MongoDBComment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/topicitem.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/topicitem.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/topics.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/topics.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,8 +170,16 @@
       <workItem from="1656067500810" duration="392000" />
       <workItem from="1656068187392" duration="328000" />
       <workItem from="1656068548305" duration="5417000" />
-      <workItem from="1656309249982" duration="3212000" />
+      <workItem from="1656309249982" duration="9169000" />
     </task>
+    <task id="LOCAL-00001" summary="Initial Commit">
+      <created>1656313102136</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1656313102136</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,5 +195,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial Commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial Commit" />
   </component>
 </project>

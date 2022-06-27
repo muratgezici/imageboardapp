@@ -20,25 +20,25 @@ public class MongoDBComment {
         MongoClient mongoClient1 = MongoClients.create("mongodb://admin_user:admin_pass@10.10.10.241:27017/");
         MongoDatabase database = mongoClient1.getDatabase("imageboard-mgezici");
         System.out.println(database);
-        MongoCollection collection = database.getCollection("topics");
+        MongoCollection collection = database.getCollection("comments");
         ArrayList<String> as = new ArrayList();
         return collection;
     }
-        public static Topic MongoGetTopic (String _id){
+        public static Comment MongoGetComment (String _id){
            MongoCollection collection = ConnectionProducts();
             FindIterable<Document> fi = collection.find();
             MongoCursor<Document> cursor = fi.iterator();
             try {
                 while (cursor.hasNext()) {
                     Document temp = cursor.next();
-
                     String id = temp.getObjectId("_id").toString();
 
                     if(id.equals(_id)){
+                        String tid = temp.getString("tid");
+                        String replyflag = temp.getString("replyflag");
                         String title = temp.getString("title");
                         String message = temp.getString("message");
                         String files = temp.getString("files");
-                        String category = temp.getString("category");
                         String owner = temp.getString("owner");
                         String password = temp.getString("password");
 
@@ -50,8 +50,15 @@ public class MongoDBComment {
                             throw new RuntimeException(e);
                         }
                         //ArrayList<String> tags = (ArrayList<String>) temp.getList("tags", String.class);
-                            Topic topic = new Topic(id,title,message,files,category,owner,password);
-                        return topic;
+                        if(replyflag.equalsIgnoreCase("true")){
+                            String replycid = temp.getString("replycid");
+                            Comment comment = new Comment(id,tid,replyflag,replycid,title,message,files,owner,password);
+                            return comment;
+                        }
+                        else{
+                            Comment comment = new Comment(id,tid,replyflag,title,message,files,owner,password);
+                            return comment;
+                        }
                     }
                 }
             } finally {
@@ -59,92 +66,57 @@ public class MongoDBComment {
             }
             return null;
         }
-    public static List<Topic> MongoGetTopics () {
+    public static List<Comment> MongoGetComments() {
         MongoCollection collection = ConnectionProducts();
         FindIterable<Document> fi = collection.find();
         MongoCursor<Document> cursor = fi.iterator();
-        List<Topic> alltopics= new ArrayList<Topic>();
+        List<Comment> allcomments= new ArrayList<Comment>();
         try {
             while (cursor.hasNext()) {
                 Document temp = cursor.next();
-
                 String id = temp.getObjectId("_id").toString();
+                String tid = temp.getString("tid");
+                String replyflag = temp.getString("replyflag");
                 String title = temp.getString("title");
                 String message = temp.getString("message");
                 String files = temp.getString("files");
-                String category = temp.getString("category");
                 String owner = temp.getString("owner");
                 String password = temp.getString("password");
 
-                Topic topic = new Topic(id,title,message,files,category,owner,password);
-                alltopics.add(topic);
+                if(replyflag.equalsIgnoreCase("true")){
+                    String replycid = temp.getString("replycid");
+                    Comment comment = new Comment(id,tid,replyflag,replycid,title,message,files,owner,password);
+                    allcomments.add(comment);
+                }
+                else{
+                    Comment comment = new Comment(id,tid,replyflag,title,message,files,owner,password);
+                    allcomments.add(comment);
+                }
+
                 }
 
             }
          finally {
             cursor.close();
-
         }
-        return alltopics;
+        return allcomments;
     }
-
-    public static List<Topic> MongoGetProductsFilter (String search){
-        MongoCollection collection = ConnectionProducts();
-        FindIterable<Document> fi = collection.find();
-        MongoCursor<Document> cursor = fi.iterator();
-        List<Topic> alltopics = new ArrayList<Topic>();
-        try {
-            while (cursor.hasNext()) {
-                Document temp = cursor.next();
-
-                String category = temp.getString("category");
-                StringMatch nextCategory = null;
-                String[] searchArray = search.split(" ");
-
-                for(String s:searchArray){
-                    Horspool stringSearch = new Horspool(s.toLowerCase());
-                    CharProvider textCategory = new StringCharProvider(category.toLowerCase(),0);
-                    StringFinder finderCategory = stringSearch.createFinder(textCategory);
-                    if(nextCategory == null)
-                    nextCategory = finderCategory.findNext();
-                }
-
-                if(nextCategory!=null){
-                    String id = temp.getObjectId("_id").toString();
-                    String title = temp.getString("title");
-                    String message = temp.getString("message");
-                    String files = temp.getString("files");
-                    String owner = temp.getString("owner");
-                    String password = temp.getString("password");
-
-                    //ArrayList<String> tags = (ArrayList<String>) temp.getList("tags", String.class);
-                    Topic topic = new Topic(id,title,message,files,category,owner,password);
-                    alltopics.add(topic);
-                }
-            }
-        } finally {
-            cursor.close();
-        }
-        return alltopics;
-    }
-
-
-        public static String mongoInsertTopic(String title, String message, String files, String category, String owner, String password){
+        public static String mongoInsertComment(String tid, String reply_flag, String reply_cid, String title, String message, String files, String username, String password){
             MongoCollection collection = ConnectionProducts();
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             Document document1 = new Document().
-
-                    append("title", title).append("message", message).
-                    append("files", files).append("category", category).
-                    append("owner", owner).append("password", password);
+                    append("tid",tid).append("reply_flag", reply_flag).
+                    append("reply_cid",reply_cid).append("title", title).
+                    append("message", message).append("files", files).
+                    append("username", username).append("password", password);
 
             collection.insertOne(document1);
             ObjectId id = document1.getObjectId("_id");
-            String tid = id.toString();
-            return tid;
+            String cid1 = id.toString();
+            return cid1;
         }
 
-        public static boolean MongoRemoveTopic(String _id){
+        public static boolean MongoRemoveComment(String _id){
             MongoCollection collection = ConnectionProducts();
 
             FindIterable<Document> fi = collection.find();
@@ -163,7 +135,7 @@ public class MongoDBComment {
             return false;
             }
 
-public static void MongoDBUpdateTopic(String _id, String title, String message, String[] files, String category, String owner, String password){
+public static void MongoDBUpdateComment(String _id, String tid, String reply_flag, String reply_cid, String title, String message, String files, String username, String password){
     MongoCollection collection = ConnectionProducts();
     FindIterable<Document> fi = collection.find();
     MongoCursor<Document> cursor = fi.iterator();
@@ -173,10 +145,10 @@ public static void MongoDBUpdateTopic(String _id, String title, String message, 
             if(_id.equals(temp.getObjectId("_id").toString())){
 
                 Document updatedVal = new Document().
-                        append("title", title).
+                        append("tid",tid).append("reply_flag", reply_flag).
+                        append("reply_cid",reply_cid).append("title", title).
                         append("message", message).append("files", files).
-                        append("price", category).append("owner", owner).
-                        append("password", password);
+                        append("username", username).append("password", password);
                 Bson updateOp = new Document("$set", updatedVal);
                collection.updateOne(temp,updateOp);
             }

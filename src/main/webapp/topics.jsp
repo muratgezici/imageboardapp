@@ -22,19 +22,32 @@
 </head>
 <body>
 <div class="message-form">
-    <table>
-        <tr><td>Nickname:</td><td><input type="text" placeholder="nickname"></td></tr>
-        <tr><td>Title:</td><td><input type="text" placeholder="title"></td></tr>
-        <tr><td>Password:</td><td><input type="text" placeholder="password"></td></tr>
-        <tr><td>Mode:</td><td><input id="post-mode" type="checkbox"><label for="post-mode"> Reply</label></td></tr>
-        <tr><td>Images:</td><td><div id="imgdiv">
-            <input id="img1" type="file">
-            <input id="img2" type="file">
-            <input id="img3" type="file">
-        </div></td></tr>
-        <tr><td></td><td><button type="submit">Post</button></td></tr>
-    </table>
-    <textarea class="post-message" cols="30" rows="10" placeholder="Write your message here..."></textarea>
+    <form action="insertServlet" method="post" enctype="multipart/form-data">
+        <table>
+            <tr><td>Nickname:</td><td><input type="text" name="nickname" placeholder="nickname"></td></tr>
+            <tr><td>Title:</td><td><input type="text" name="title" placeholder="title"></td></tr>
+            <tr><td>Password:</td><td><input type="text" name="password" placeholder="password"></td></tr>
+            <tr><td>Mode:</td><td><input id="post-mode" name="post-mode" value="true" type="checkbox"><label for="post-mode"> Reply</label></td></tr>
+            <tr>
+                <td>Category:</td>
+                <td>
+                    <select id="categories" name="categories" size="1">
+                        <option value="general">General</option>
+                        <option value="videogames">Videogames</option>
+                        <option value="football">Football</option>
+                        <option value="misc">Misc</option>
+                    </select>
+                </td>
+            </tr>
+            <tr><td>Images:</td><td><div id="imgdiv">
+                <input id="img1" type="file">
+                <input id="img2" type="file">
+                <input id="img3" type="file">
+            </div></td></tr>
+            <tr><td></td><td><button type="submit">Post</button></td></tr>
+        </table>
+        <textarea class="post-message" name="message" cols="30" rows="10" placeholder="Write your message here..."></textarea>
+    </form>
 </div>
 <nav class="nav-bar">Categories : s a s | b a s | k s a | n b g | e w s</nav>
 <div class="message-content">

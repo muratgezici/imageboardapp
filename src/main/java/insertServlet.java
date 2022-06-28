@@ -1,11 +1,11 @@
 import com.oreilly.servlet.MultipartRequest;
+import db.MongoDBComment;
+import db.MongoDBTopic;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 @WebServlet(name = "insertServlet", value = "/insertServlet")
 public class insertServlet extends HttpServlet {
@@ -30,7 +30,7 @@ public class insertServlet extends HttpServlet {
                 tid = MongoDBTopic.mongoInsertTopic(title,message,files,category,owner,password);
         }
         else{
-            String tid = m.getParameter("tid");
+            String tid = m.getParameter("tidCurrent");
             String replyflag = "true";
             String title = m.getParameter("title");
             String message = m.getParameter("message");
@@ -41,8 +41,19 @@ public class insertServlet extends HttpServlet {
             String cid= "";
                 cid = MongoDBComment.mongoInsertComment(tid,replyflag,replycid,title,message,files,owner,password);
         }
+        String jsploc = m.getParameter("jsplocation");
+        if(jsploc.equalsIgnoreCase("topics")){
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/topics.jsp");
+            dispatcher.forward(request,response);
+        }
+        else{
+            String tid1 = m.getParameter("tidCurrent");
+            System.out.println("inside insert tid: "+tid1);
+            HttpSession session = request.getSession();
+            session.setAttribute("tidCurrent", tid1);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/topicitem.jsp");
+            dispatcher.forward(request,response);
+        }
 
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/topicitem.jsp");
-        dispatcher.forward(request,response);
     }
 }

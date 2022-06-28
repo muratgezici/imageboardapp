@@ -1,5 +1,6 @@
 .message-form{
     display:flex;
+    flex-direction: row;
     width: 600px;
     height: 250px;
     margin:0px auto;
@@ -49,8 +50,8 @@
 }
 .message-content .table-inner{
     width: 1030px;
-    margin-left: 50px;
-    margin-right: 20x;
+    margin-left: auto;
+    margin-right: 10px;
     border-top: 0.2px solid black;
     background-color: rgb(161, 161, 161);
 }
@@ -100,4 +101,20 @@
     max-height: 100px;
     object-fit: contain;
 
+}
+.table-inner .smallimg{
+    display:flex;
+    width: 200px;
+    height: 175px;
+}
+.table-inner .smallimg-item{
+    width: 75px;
+    height: 75px;
+    max-width: 75px;
+    max-height: 75px;
+}
+
+.info-reply td:last-of-type{
+    text-align: right;
+    background-color: rgb(161, 161, 161);
 }

@@ -1,3 +1,5 @@
+package db;
+
 public class Topic {
     private String tid;
     private String title;

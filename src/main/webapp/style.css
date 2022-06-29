@@ -12,7 +12,14 @@
 *{
     margin:0px;
     padding: 0px;
+
+}
+html, input, textarea, option, button, select{
     background-color: rgb(214, 214, 214);
+}
+input, textarea, option, button, select{
+    border: 0.01px solid gray;
+    border-radius: 4px;
 }
 .message-form table{
     width: 350px;
@@ -42,52 +49,53 @@
     height: 20px;
 }
 
+
 .message-content{
     width: 1100px;
     border: 0.2px solid black;
     margin-left: 20px;
+    font-size: 11px;
     background-color: rgb(161, 161, 161);
+}
+.message-content .table-main{
+    width: 1100px;
+    height: fit-content;
+    font-size: 12px;
+    margin-left: auto;
+    margin-right: 10px;
+}
+.topic-content{
+    width: 1100px;
 }
 .message-content .table-main td span{
     font-size: 15px;
     font-weight: bold;
-    background-color: rgb(161, 161, 161);
+
 }
 .message-content .table-inner td span{
     font-size: 18px;
     font-weight: bold;
-    background-color: rgb(161, 161, 161);
+
 }
 .message-content .table-inner{
-    width: 1030px;
+    width: 950px;
+    height: fit-content;
+    font-size: 11px;
     margin-left: auto;
     margin-right: 10px;
     border-top: 0.2px solid black;
-    background-color: rgb(161, 161, 161);
+
 }
 .message-content .table-inner img{
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     object-fit: contain;
-    background-color: rgb(161, 161, 161);
+
 
 }
-.message-content .table-inner td{
-    background-color: rgb(161, 161, 161);
-
-}
-.message-content .table-main{
-    background-color: rgb(161, 161, 161);
-}
 .message-content .table-main img{
-    background-color: rgb(161, 161, 161);
-}
-.message-content .table-main td{
-    background-color: rgb(161, 161, 161);
-}
-.message-content .table-main img{
-    width: 300px;
-    height: 300px;
+    width: 150px;
+    height: 150px;
     object-fit: contain;
 }
 .nav-bar{
@@ -96,35 +104,34 @@
 }
 .smallimg{
     display:flex;
-    width: 300px;
-    height: 200px;
+    width: 100px;
+    height: 50px;
     justify-content: space-around;
     object-fit: contain;
-    background-color: rgb(161, 161, 161);
+
     text-align: center;
     align-items: center;
 }
 .smallimg-item{
-    width: 100px;
-    height: 100px;
-    max-width: 100px;
-    max-height: 100px;
+    width: 50px;
+    height: 50px;
+    max-width: 50px;
+    max-height: 50px;
     object-fit: contain;
 
 }
 .table-inner .smallimg{
     display:flex;
-    width: 200px;
-    height: 175px;
+    width: 60px;
+    height: 30px;
 }
 .table-inner .smallimg-item{
-    width: 75px;
-    height: 75px;
-    max-width: 75px;
-    max-height: 75px;
+    width: 30px;
+    height: 30px;
+    max-width: 30px;
+    max-height: 30px;
 }
 
 .info-reply td:last-of-type{
     text-align: right;
-    background-color: rgb(161, 161, 161);
 }

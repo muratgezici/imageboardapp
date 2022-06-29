@@ -20,7 +20,7 @@ public class insertServlet extends HttpServlet {
         String flag = m.getParameter("post-mode");
         String tid = null;
         HttpSession session = request.getSession();
-//insert topic -------------------------------------------------------------------------------------------------
+        //insert topic -------------------------------------------------------------------------------------------------
         if(flag==null){
             String title = m.getParameter("title");
             String message = m.getParameter("message");

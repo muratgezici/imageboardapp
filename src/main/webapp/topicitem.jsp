@@ -77,16 +77,14 @@
     Topic topic = MongoDBTopic.MongoGetTopic(tidCurr);
     ArrayList<Comment> comments = (ArrayList<Comment>) MongoDBComment.MongoGetComments();
     %>
-<div class="message-content">
+<div class="message-content topic-content">
     <table class="table-main">
         <tr class="info-reply"><td>Posted by: <%=topic.getOwner()%> => <span><%=topic.getTitle()%></span></td><td class="replycheckbox" style="visibility: hidden"><input type="checkbox" name="replycid" value="topic:<%=topic.getTid()%>">Reply</td></tr>
-        <tr><td><img src="fb.png" alt=""><div class="smallimg">
-            <img class="smallimg-item" src="fb.png" alt="">
-            <img class="smallimg-item" src="fb.png" alt=""></div></td>
+        <tr><td><img src="fb.png" alt=""></td>
             <td> <%=topic.getMessage()%></td></tr>
         <tr><td></td><td colspan="2"><button>Edit</button><button>Delete</button></td></tr>
     </table></div>
-<br>
+
 <%
     int maxlevel=0;
     for(Comment commentlength:comments){
@@ -97,19 +95,16 @@
 for(Comment comment:comments){
     if(comment.getTid().equalsIgnoreCase(tidCurr) && comment.getLevel()==1){
        %>
-    <div class='message-content'>
-        <table class='table-main'>
-            <tr><td>Posted by: <%=comment.getUsername()%> =>  <span><%=comment.getTitle()%></span></td><td class='replycheckbox' style='visibility: hidden'><input type='checkbox' name='replycid' value='comment:<%=comment.getCid()%>'>Reply</td></tr>
-            <tr><td><img src='fb.png' alt=""><div class="smallimg">
-                <img class="smallimg-item" src="fb.png" alt="">
-                <img class="smallimg-item" src="fb.png" alt=""></div></td><td><%=comment.getMessage()%></td></tr>
+    <div class='message-content' style="background-color: rgb(156, 156, 156);">
+        <table class='table-main ' style="background-color: rgb(156, 156, 156);">
+            <tr><td colspan='2'>Posted by: <%=comment.getUsername()%> =>  <span><%=comment.getTitle()%></span></td><td class='replycheckbox' style='visibility: hidden'><input type='checkbox' name='replycid' value='comment:<%=comment.getCid()%>'>Reply</td></tr>
+            <tr><td><img src='fb.png' alt=""></td><td><%=comment.getMessage()%></td></tr>
             <tr><td></td><td colspan='2'><button>Edit</button><button>Delete</button></td></tr>
 
           <% String html=  printTable(comments, "comment:"+comment.getCid(), 2, maxlevel, tidCurr, "", comment.getTitle()); %>
             <%=html%>
         </table>
     </div>
-    <br>
     <%}}%>
 </form>
 
@@ -124,12 +119,11 @@ public String printTable(ArrayList<Comment> comments,String cid, int level,int m
             System.out.println("outside inner table loop");
         if(comment.getLevel()==level && comment.getReply_cid().equalsIgnoreCase(cid)){
             System.out.println("inside inner table loop");
-            int tablewidth = 1030-level*50;
-        html+= "  <tr>  <table class='table-inner' style='width:"+tablewidth+"px'>" +
-                "            <tr><td>Posted by:"+ comment.getUsername()+" => <span>"+comment.getTitle()+"</span> replied to: ("+replied_comment+") </td><td class='replycheckbox' style='visibility: hidden'><input type='checkbox' name='replycid' value='comment:"+comment.getCid()+"'>Reply</td></tr>" +
-" <tr> <td><img src='fb.png' alt=\"\"><div class=\"smallimg\">\n" +
-                "            <img class=\"smallimg-item\" src=\"fb.png\" alt=\"\">" +
-                "            <img class=\"smallimg-item\" src=\"fb.png\" alt=\"\"></div></td> <td>"+comment.getMessage()+"</td></tr> " +
+            int tablewidth = 950-level*50;
+            int color = 161 - level*5;
+        html+= "  <tr style=' background-color: rgb("+color+","+color+", "+color+");'>  <table class='table-inner' style='width:"+tablewidth+"px; background-color: rgb("+color+","+color+", "+color+");border-collapse:collapse'>" +
+                "            <tr><td colspan='2'>Posted by:"+ comment.getUsername()+" => <span>"+comment.getTitle()+"</span> replied to: ("+replied_comment+") </td><td class='replycheckbox' style='visibility: hidden'><input type='checkbox' name='replycid' value='comment:"+comment.getCid()+"'>Reply</td></tr>" +
+" <tr> <td><img src='fb.png' alt=\"\"></td> <td>"+comment.getMessage()+"</td></tr> " +
 " <tr> <td></td> <td colspan='2'> <button>Edit</button> <button>Delete</button> </td> </tr>  ";
 
         int level1 = level+1;

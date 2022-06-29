@@ -58,9 +58,9 @@
 <%for(Topic topic:topics){%>
 <div class="message-content">
     <table class="table-main">
-        <tr><td>Posted by: <%=topic.getOwner()%>> =></td></tr>
-        <tr><td><img src="fb.png" alt=""></td><td> <span><%=topic.getTitle()%>></span> <%=topic.getMessage()%>
-            <form action="redirectServlet" method="post"> <button type="submit" name="tidCurrent" value="<%=topic.getTid()%>">Continue reading..</button></form></td></tr>
+        <tr><td>Posted by: <%=topic.getOwner()%> => <span><%=topic.getTitle()%></span></td></tr>
+        <tr><td><img src="fb.png" alt=""></td><td>  <%=topic.getMessage()%>
+            <form action="redirectServlet" method="post"> <button type="submit" style="background-color:rgb(161, 161, 161);" name="tidCurrent" value="<%=topic.getTid()%>">Continue reading..</button></form></td></tr>
     </table></div>
 <br>
 <%}%>

@@ -48,6 +48,16 @@
     margin-left: 20px;
     background-color: rgb(161, 161, 161);
 }
+.message-content .table-main td span{
+    font-size: 15px;
+    font-weight: bold;
+    background-color: rgb(161, 161, 161);
+}
+.message-content .table-inner td span{
+    font-size: 18px;
+    font-weight: bold;
+    background-color: rgb(161, 161, 161);
+}
 .message-content .table-inner{
     width: 1030px;
     margin-left: auto;

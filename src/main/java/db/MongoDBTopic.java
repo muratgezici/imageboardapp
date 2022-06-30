@@ -166,39 +166,21 @@ public class MongoDBTopic {
             return tid;
         }
 
-        public static boolean MongoRemoveTopic(String _id){
-            MongoCollection collection = ConnectionProducts();
 
-            FindIterable<Document> fi = collection.find();
-            MongoCursor<Document> cursor = fi.iterator();
-            try {
-                while (cursor.hasNext()) {
-                    Document temp = cursor.next();
-                    if(_id.equalsIgnoreCase(temp.getObjectId("_id").toString())){
-                        collection.deleteOne(temp);
-                        return true;
-                    }
-                }
-            } finally {
-                cursor.close();
-            }
-            return false;
-            }
-
-public static void MongoDBUpdateTopic(String _id, String title, String message, String[] files, String category, String owner, String password){
+public static void MongoDBDeleteTopic(String _id){
     MongoCollection collection = ConnectionProducts();
     FindIterable<Document> fi = collection.find();
     MongoCursor<Document> cursor = fi.iterator();
+
     try {
         while (cursor.hasNext()) {
             Document temp = cursor.next();
             if(_id.equals(temp.getObjectId("_id").toString())){
 
                 Document updatedVal = new Document().
-                        append("title", title).
-                        append("message", message).append("files", files).
-                        append("price", category).append("owner", owner).
-                        append("password", password);
+                        append("title", "title has been deleted").append("message", "message has been deleted").
+                        append("files", null).append("category", " ").
+                        append("owner", " ").append("password", " ").append("imagebase64", "");
                 Bson updateOp = new Document("$set", updatedVal);
                collection.updateOne(temp,updateOp);
             }
@@ -207,4 +189,33 @@ public static void MongoDBUpdateTopic(String _id, String title, String message, 
         cursor.close();
     }
 }
+
+    public static void MongoDBUpdateTopic(String _id,String message, File file_1){
+        MongoCollection collection = ConnectionProducts();
+        byte[] fileContent = new byte[0];
+        try {
+            fileContent = FileUtils.readFileToByteArray(new File(file_1.getPath()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Base64 codec = new Base64();
+        String encoded = codec.encodeBase64String(fileContent);
+
+        FindIterable<Document> fi = collection.find();
+        MongoCursor<Document> cursor = fi.iterator();
+        try {
+            while (cursor.hasNext()) {
+                Document temp = cursor.next();
+                if(_id.equals(temp.getObjectId("_id").toString())){
+
+                    Document updatedVal = new Document().
+                    append("message", message).append("imagebase64", encoded);
+                    Bson updateOp = new Document("$set", updatedVal);
+                    collection.updateOne(temp,updateOp);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+    }
 }

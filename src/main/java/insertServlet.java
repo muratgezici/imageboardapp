@@ -19,8 +19,24 @@ public class insertServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         MultipartRequest m = new MultipartRequest(request, "E:\\MuratStajDosyaları\\imageboardapp\\src\\main\\webapp\\img",16777216);
         String flag = m.getParameter("post-mode");
-        String tid = null;
+        String comingfrom = m.getParameter("comingfromedit");
+        String tid123 = null;
         HttpSession session = request.getSession();
+        if(comingfrom!=null){
+
+            if(comingfrom.equalsIgnoreCase("topic")){
+                String message = m.getParameter("message");
+                File file_1 = m.getFile("file_1");
+                String curritem = m.getParameter("currentitem");
+                MongoDBTopic.MongoDBUpdateTopic(curritem,message,file_1);
+            }
+                else if(comingfrom.equalsIgnoreCase("comment")){
+                String message = m.getParameter("message");
+                File file_1 = m.getFile("file_1");
+                String curritem = m.getParameter("currentitem");
+                MongoDBComment.MongoDBUpdateComment(curritem,message,file_1);
+            }
+        }else{
 
         File file_1 = m.getFile("file_1");
         System.out.println("file_1 in insert:  "+file_1.getName());
@@ -33,7 +49,7 @@ public class insertServlet extends HttpServlet {
             String password = m.getParameter("password");
             String category = m.getParameter("categories");
 
-                tid = MongoDBTopic.mongoInsertTopic(title,message,files,category,owner,password, file_1);
+                tid123 = MongoDBTopic.mongoInsertTopic(title,message,files,category,owner,password, file_1);
         }
         //insert comment --------------------------------------------------------------------------------
         else{
@@ -49,11 +65,12 @@ public class insertServlet extends HttpServlet {
                 cid = MongoDBComment.mongoInsertComment(tid2,replyflag,replycid,title,message,files,owner,password, file_1);
         }
 
-
+        }
         //redirect part --------------------------------------------------------------------------------------------
         String jsploc = m.getParameter("jsplocation");
         if(jsploc.equalsIgnoreCase("topics")){
-            session.setAttribute("tidCurrent", tid);
+            System.out.println("tid here is :"+tid123);
+            session.setAttribute("tidCurrent", tid123);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/topicitem.jsp");
             dispatcher.forward(request,response);
         }
@@ -66,7 +83,10 @@ public class insertServlet extends HttpServlet {
                 dispatcher.forward(request,response);
             }
             else{
-                session.setAttribute("tidCurrent", tid);
+                System.out.println("comingfrom: "+comingfrom);
+                    String tid12 = m.getParameter("tidCurrent");
+                    session.setAttribute("tidCurrent", tid12);
+
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/topicitem.jsp");
                 dispatcher.forward(request,response);
             }

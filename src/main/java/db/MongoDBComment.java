@@ -30,54 +30,50 @@ public class MongoDBComment {
         ArrayList<String> as = new ArrayList();
         return collection;
     }
-        public static Comment MongoGetComment (String _id){
-           MongoCollection collection = ConnectionProducts();
-            FindIterable<Document> fi = collection.find();
-            MongoCursor<Document> cursor = fi.iterator();
-            try {
-                while (cursor.hasNext()) {
-                    Document temp = cursor.next();
-                    String id = temp.getObjectId("_id").toString();
 
-                    if(id.equals(_id)){
-                        String tid = temp.getString("tid");
-                        String replyflag = temp.getString("replyflag");
-                        String title = temp.getString("title");
-                        String message = temp.getString("message");
-                        String files = temp.getString("files");
-                        String owner = temp.getString("username");
-                        String password = temp.getString("password");
-                        int level = temp.getInteger("level");
-                        String add_date = temp.getString("add_date");
-                        String file_byte = temp.getString("imagebase64");
-                        Date date1=null,date2=null;
-                        try {
-                            date1 = new SimpleDateFormat("yyyy-mm-dd").parse(add_date);
-                        } catch (ParseException e) {
-                            throw new RuntimeException(e);
-                        }
-                        //ArrayList<String> tags = (ArrayList<String>) temp.getList("tags", String.class);
-                        if(replyflag.equalsIgnoreCase("true")){
-                            String replycid = temp.getString("replycid");
-                            Comment comment = new Comment(id,tid,replyflag,replycid,title,message,files,owner,password,level,file_byte);
-                            return comment;
-                        }
-                        else{
-                            Comment comment = new Comment(id,tid,replyflag,title,message,files,owner,password,level,file_byte);
-                            return comment;
-                        }
+    public static Comment MongoGetComment(String _id) {
+        MongoCollection collection = ConnectionProducts();
+        FindIterable<Document> fi = collection.find();
+        MongoCursor<Document> cursor = fi.iterator();
+        try {
+            while (cursor.hasNext()) {
+                Document temp = cursor.next();
+                String id = temp.getObjectId("_id").toString();
+
+                if (id.equals(_id)) {
+                    String tid = temp.getString("tid");
+                    String replyflag = temp.getString("reply_flag");
+                    String title = temp.getString("title");
+                    String message = temp.getString("message");
+                    String files = temp.getString("files");
+                    String owner = temp.getString("username");
+                    String password = temp.getString("password");
+                    int level = temp.getInteger("level");
+                    String add_date = temp.getString("add_date");
+                    String file_byte = temp.getString("imagebase64");
+
+                    //ArrayList<String> tags = (ArrayList<String>) temp.getList("tags", String.class);
+                    if (replyflag.equalsIgnoreCase("true")) {
+                        String replycid = temp.getString("replycid");
+                        Comment comment = new Comment(id, tid, replyflag, replycid, title, message, files, owner, password, level, file_byte);
+                        return comment;
+                    } else {
+                        Comment comment = new Comment(id, tid, replyflag, title, message, files, owner, password, level, file_byte);
+                        return comment;
                     }
                 }
-            } finally {
-                cursor.close();
             }
-            return null;
+        } finally {
+            cursor.close();
         }
+        return null;
+    }
+
     public static List<Comment> MongoGetComments() {
         MongoCollection collection = ConnectionProducts();
         FindIterable<Document> fi = collection.find();
         MongoCursor<Document> cursor = fi.iterator();
-        List<Comment> allcomments= new ArrayList<Comment>();
+        List<Comment> allcomments = new ArrayList<Comment>();
         try {
             while (cursor.hasNext()) {
                 Document temp = cursor.next();
@@ -92,99 +88,108 @@ public class MongoDBComment {
                 String file_byte = temp.getString("imagebase64");
                 int level = temp.getInteger("level");
 
-                if(replyflag.equalsIgnoreCase("true")){
+                if (replyflag.equalsIgnoreCase("true")) {
                     String replycid = temp.getString("reply_cid");
-                    Comment comment = new Comment(id,tid,replyflag,replycid,title,message,files,owner,password,level,file_byte);
+                    Comment comment = new Comment(id, tid, replyflag, replycid, title, message, files, owner, password, level, file_byte);
                     allcomments.add(comment);
-                }
-                else{
-                    Comment comment = new Comment(id,tid,replyflag,title,message,files,owner,password,level,file_byte);
+                } else {
+                    Comment comment = new Comment(id, tid, replyflag, title, message, files, owner, password, level, file_byte);
                     allcomments.add(comment);
-                }
-
                 }
 
             }
-         finally {
+
+        } finally {
             cursor.close();
         }
         return allcomments;
     }
-        public static String mongoInsertComment(String tid, String reply_flag, String reply_cid, String title, String message, String files, String username, String password, File file_1){
-            MongoCollection collection = ConnectionProducts();
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            ArrayList<Comment> comments = (ArrayList<Comment>) MongoDBComment.MongoGetComments();
-            int level1=1;
-            if(comments.size()>0){
-                for(Comment comm:comments){
-                    String search = "comment:"+comm.getCid();
-                    if(search.equalsIgnoreCase(reply_cid)){
-                        level1 = comm.getLevel()+1;
-                    }
+
+    public static String mongoInsertComment(String tid, String reply_flag, String reply_cid, String title, String message, String files, String username, String password, File file_1) {
+        MongoCollection collection = ConnectionProducts();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        ArrayList<Comment> comments = (ArrayList<Comment>) MongoDBComment.MongoGetComments();
+        int level1 = 1;
+        if (comments.size() > 0) {
+            for (Comment comm : comments) {
+                String search = "comment:" + comm.getCid();
+                if (search.equalsIgnoreCase(reply_cid)) {
+                    level1 = comm.getLevel() + 1;
                 }
             }
-            ObjectId oid =  MongoDBFile.insertFile(file_1);
-            byte[] fileContent = new byte[0];
-            try {
-                fileContent = FileUtils.readFileToByteArray(new File(file_1.getPath()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            Base64 codec = new Base64();
-            String encoded = codec.encodeBase64String(fileContent);
-            //System.out.println("in mpngotopic inser: "+encoded);
-
-            Document document1 = new Document().
-                    append("tid",tid).append("reply_flag", reply_flag).
-                    append("reply_cid",reply_cid).append("title", title).
-                    append("message", message).append("files", files).
-                    append("username", username).append("password", password).append("level", level1).append("imagebase64", encoded);
-
-            collection.insertOne(document1);
-            ObjectId id = document1.getObjectId("_id");
-            String cid1 = id.toString();
-            return cid1;
         }
-
-        public static boolean MongoRemoveComment(String _id){
-            MongoCollection collection = ConnectionProducts();
-
-            FindIterable<Document> fi = collection.find();
-            MongoCursor<Document> cursor = fi.iterator();
-            try {
-                while (cursor.hasNext()) {
-                    Document temp = cursor.next();
-                    Document updatedVal = new Document()
-                    .append("title", "---deleted---").append("message", "---deleted---");
-                    Bson updateOp = new Document("$set", updatedVal);
-                    collection.updateOne(temp,updateOp);
-                }
-            } finally {
-                cursor.close();
-            }
-            return false;
-            }
-
-public static void MongoDBUpdateComment(String _id, String tid, String reply_flag, String reply_cid, String title, String message, String files, String username, String password){
-    MongoCollection collection = ConnectionProducts();
-    FindIterable<Document> fi = collection.find();
-    MongoCursor<Document> cursor = fi.iterator();
-    try {
-        while (cursor.hasNext()) {
-            Document temp = cursor.next();
-            if(_id.equals(temp.getObjectId("_id").toString())){
-
-                Document updatedVal = new Document().
-                        append("tid",tid).append("reply_flag", reply_flag).
-                        append("reply_cid",reply_cid).append("title", title).
-                        append("message", message).append("files", files).
-                        append("username", username).append("password", password);
-                Bson updateOp = new Document("$set", updatedVal);
-               collection.updateOne(temp,updateOp);
-            }
+        ObjectId oid = MongoDBFile.insertFile(file_1);
+        byte[] fileContent = new byte[0];
+        try {
+            fileContent = FileUtils.readFileToByteArray(new File(file_1.getPath()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-    } finally {
-        cursor.close();
+        Base64 codec = new Base64();
+        String encoded = codec.encodeBase64String(fileContent);
+        //System.out.println("in mpngotopic inser: "+encoded);
+
+        Document document1 = new Document().
+                append("tid", tid).append("reply_flag", reply_flag).
+                append("reply_cid", reply_cid).append("title", title).
+                append("message", message).append("files", files).
+                append("username", username).append("password", password).append("level", level1).append("imagebase64", encoded);
+
+        collection.insertOne(document1);
+        ObjectId id = document1.getObjectId("_id");
+        String cid1 = id.toString();
+        return cid1;
     }
-}
+
+    public static void MongoDBDeleteComment(String _id, String tid, String reply_flag, String reply_cid, String title, String username) {
+        MongoCollection collection = ConnectionProducts();
+        FindIterable<Document> fi = collection.find();
+        MongoCursor<Document> cursor = fi.iterator();
+        try {
+            while (cursor.hasNext()) {
+                Document temp = cursor.next();
+                if (_id.equals(temp.getObjectId("_id").toString())) {
+
+                    Document updatedVal = new Document().
+                            append("tid", tid).append("reply_flag", reply_flag).
+                            append("reply_cid", reply_cid).append("title", title).
+                            append("message", "Message deleted").append("files", " ").
+                            append("username", username).append("password", " ").append("imagebase64", " ");
+                    Bson updateOp = new Document("$set", updatedVal);
+                    collection.updateOne(temp, updateOp);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+    }
+
+    public static void MongoDBUpdateComment(String _id, String message, File file_1) {
+        MongoCollection collection = ConnectionProducts();
+        byte[] fileContent = new byte[0];
+        try {
+            fileContent = FileUtils.readFileToByteArray(new File(file_1.getPath()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Base64 codec = new Base64();
+        String encoded = codec.encodeBase64String(fileContent);
+
+        FindIterable<Document> fi = collection.find();
+        MongoCursor<Document> cursor = fi.iterator();
+        try {
+            while (cursor.hasNext()) {
+                Document temp = cursor.next();
+                if (_id.equals(temp.getObjectId("_id").toString())) {
+
+                    Document updatedVal = new Document().
+                            append("message", message).append("imagebase64", encoded);
+                    Bson updateOp = new Document("$set", updatedVal);
+                    collection.updateOne(temp, updateOp);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+    }
 }

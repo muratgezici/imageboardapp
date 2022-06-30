@@ -64,8 +64,9 @@
             <tr><td></td><td><button type="submit" name="jsplocation" value="topics">Post</button></td></tr>
         </table>
         <textarea class="post-message" name="message" cols="30" rows="10" placeholder="Write your message here..."></textarea>
-    </form>
+
 </div>
+</form>
 <nav class="nav-bar">Categories : s a s | b a s | k s a | n b g | e w s</nav>
 
 <%for(Topic topic:topics){%>

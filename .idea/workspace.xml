@@ -9,13 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9c8f6c6-0f71-4f37-94f9-67779673197f" name="Changes" comment="videos and images are in database and are shown.&#10;(size and visibility css not included)">
+    <list default="true" id="c9c8f6c6-0f71-4f37-94f9-67779673197f" name="Changes" comment="video/image sizes fixed. Anchors created. Reply to comment variations added.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/EditDeleteServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/edit.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/webContexts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webContexts.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/db/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/Comment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/db/MongoDBComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/MongoDBComment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/db/MongoDBTopic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/MongoDBTopic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/insertServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/insertServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/topicitem.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/topicitem.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/topics.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/topics.jsp" afterDir="false" />
     </list>
@@ -27,9 +28,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Jsp File" />
         <option value="CSS File" />
         <option value="Class" />
+        <option value="Jsp File" />
       </list>
     </option>
   </component>
@@ -186,6 +187,7 @@
       <workItem from="1656568132160" duration="11311000" />
       <workItem from="1656584034487" duration="6000" />
       <workItem from="1656584116934" duration="8853000" />
+      <workItem from="1656594066327" duration="4739000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1656313102136</created>
@@ -236,7 +238,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656579506976</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="video/image sizes fixed. Anchors created. Reply to comment variations added.">
+      <created>1656594211853</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1656594211853</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -260,6 +269,7 @@
     <MESSAGE value="style and redirection modifications" />
     <MESSAGE value="css modifications for topicitem" />
     <MESSAGE value="videos and images are in database and are shown.&#10;(size and visibility css not included)" />
-    <option name="LAST_COMMIT_MESSAGE" value="videos and images are in database and are shown.&#10;(size and visibility css not included)" />
+    <MESSAGE value="video/image sizes fixed. Anchors created. Reply to comment variations added." />
+    <option name="LAST_COMMIT_MESSAGE" value="video/image sizes fixed. Anchors created. Reply to comment variations added." />
   </component>
 </project>

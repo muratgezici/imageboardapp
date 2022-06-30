@@ -1,15 +1,24 @@
 package db;
 
 import com.mongodb.client.*;
+import com.mongodb.client.gridfs.GridFSBucket;
+import com.mongodb.client.gridfs.GridFSBuckets;
+import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 import net.amygdalum.stringsearchalgorithms.io.CharProvider;
 import net.amygdalum.stringsearchalgorithms.io.StringCharProvider;
 import net.amygdalum.stringsearchalgorithms.search.Horspool;
 import net.amygdalum.stringsearchalgorithms.search.StringFinder;
 import net.amygdalum.stringsearchalgorithms.search.StringMatch;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+
 import org.bson.types.ObjectId;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +32,7 @@ public class MongoDBTopic {
         MongoDatabase database = mongoClient1.getDatabase("imageboard-mgezici");
         System.out.println(database);
         MongoCollection collection = database.getCollection("topics");
+
         ArrayList<String> as = new ArrayList();
         return collection;
     }
@@ -39,10 +49,12 @@ public class MongoDBTopic {
                     if(id.equals(_id)){
                         String title = temp.getString("title");
                         String message = temp.getString("message");
-                        String files = temp.getString("files");
+                        ObjectId files = temp.getObjectId("files");
                         String category = temp.getString("category");
                         String owner = temp.getString("owner");
                         String password = temp.getString("password");
+
+
 
                         //ArrayList<String> tags = (ArrayList<String>) temp.getList("tags", String.class);
                             Topic topic = new Topic(id,title,message,files,category,owner,password);
@@ -66,12 +78,16 @@ public class MongoDBTopic {
                 String id = temp.getObjectId("_id").toString();
                 String title = temp.getString("title");
                 String message = temp.getString("message");
-                String files = temp.getString("files");
+                ObjectId files = temp.getObjectId("files");
                 String category = temp.getString("category");
                 String owner = temp.getString("owner");
                 String password = temp.getString("password");
 
-                Topic topic = new Topic(id,title,message,files,category,owner,password);
+                String file_byte = temp.getString("imagebase64");
+
+
+
+                Topic topic = new Topic(id,title,message,files,category,owner,password, file_byte);
                 alltopics.add(topic);
                 }
 
@@ -108,7 +124,7 @@ public class MongoDBTopic {
                     String id = temp.getObjectId("_id").toString();
                     String title = temp.getString("title");
                     String message = temp.getString("message");
-                    String files = temp.getString("files");
+                    ObjectId files = temp.getObjectId("files");
                     String owner = temp.getString("owner");
                     String password = temp.getString("password");
 
@@ -124,14 +140,25 @@ public class MongoDBTopic {
     }
 
 
-        public static String mongoInsertTopic(String title, String message, String files, String category, String owner, String password){
+        public static String mongoInsertTopic(String title, String message, String files, String category, String owner, String password, File file_1){
             MongoCollection collection = ConnectionProducts();
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+         ObjectId oid =  MongoDBFile.insertFile(file_1);
+            byte[] fileContent = new byte[0];
+            try {
+                fileContent = FileUtils.readFileToByteArray(new File(file_1.getPath()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Base64 codec = new Base64();
+            String encoded = codec.encodeBase64String(fileContent);
+            //System.out.println("in mpngotopic inser: "+encoded);
             Document document1 = new Document().
 
                     append("title", title).append("message", message).
-                    append("files", files).append("category", category).
-                    append("owner", owner).append("password", password);
+                    append("files", oid).append("category", category).
+                    append("owner", owner).append("password", password).append("imagebase64", encoded);
 
             collection.insertOne(document1);
             ObjectId id = document1.getObjectId("_id");

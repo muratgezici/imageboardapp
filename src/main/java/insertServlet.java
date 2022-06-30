@@ -5,6 +5,7 @@ import db.MongoDBTopic;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import java.io.File;
 import java.io.IOException;
 
 @WebServlet(name = "insertServlet", value = "/insertServlet")
@@ -16,10 +17,13 @@ public class insertServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        MultipartRequest m = new MultipartRequest(request, "E:\\MuratStajDosyaları\\imageboardapp\\src\\main\\webapp\\img");
+        MultipartRequest m = new MultipartRequest(request, "E:\\MuratStajDosyaları\\imageboardapp\\src\\main\\webapp\\img",16777216);
         String flag = m.getParameter("post-mode");
         String tid = null;
         HttpSession session = request.getSession();
+
+        File file_1 = m.getFile("file_1");
+        System.out.println("file_1 in insert:  "+file_1.getName());
         //insert topic -------------------------------------------------------------------------------------------------
         if(flag==null){
             String title = m.getParameter("title");
@@ -29,7 +33,7 @@ public class insertServlet extends HttpServlet {
             String password = m.getParameter("password");
             String category = m.getParameter("categories");
 
-                tid = MongoDBTopic.mongoInsertTopic(title,message,files,category,owner,password);
+                tid = MongoDBTopic.mongoInsertTopic(title,message,files,category,owner,password, file_1);
         }
         //insert comment --------------------------------------------------------------------------------
         else{

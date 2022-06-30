@@ -44,9 +44,7 @@
                 </td>
             </tr>
             <tr><td>Images:</td><td><div id="imgdiv">
-                <input id="img1" type="file">
-                <input id="img2" type="file">
-                <input id="img3" type="file">
+                <input id="file_1" name="file_1" type="file">
             </div></td></tr>
             <tr><td></td><td><button type="submit" name="jsplocation" value="topics">Post</button></td></tr>
         </table>
@@ -59,7 +57,11 @@
 <div class="message-content">
     <table class="table-main">
         <tr><td>Posted by: <%=topic.getOwner()%> => <span><%=topic.getTitle()%></span></td></tr>
-        <tr><td><img src="fb.png" alt=""></td><td>  <%=topic.getMessage()%>
+        <tr><td><img src="data:image/png;base64,<%=topic.getFile_byte()%>" alt="">
+            <video controls>
+            <source type="video/webm" src="data:video/webm;base64,<%=topic.getFile_byte()%>">
+            </video>
+        </td><td>  <%=topic.getMessage()%>
             <form action="redirectServlet" method="post"> <button type="submit" style="background-color:rgb(161, 161, 161);" name="tidCurrent" value="<%=topic.getTid()%>">Continue reading..</button></form></td></tr>
     </table></div>
 <br>

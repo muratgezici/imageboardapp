@@ -60,9 +60,7 @@
             </td>
         </tr>
         <tr><td>Images:</td><td><div id="imgdiv">
-            <input id="img1" type="file">
-            <input id="img2" type="file">
-            <input id="img3" type="file">
+            <input id="file_1" type="file">
         </div></td></tr>
         <input type="hidden" name="tidCurrent" value="<%=tidCurr%>">
         <tr><td></td><td><button type="submit" name="jsplocation" value="topicitem">Post</button></td></tr>

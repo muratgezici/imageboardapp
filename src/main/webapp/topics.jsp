@@ -12,6 +12,7 @@
 <head>
     <title>Topics</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <style>
         .message-content .table-main img{
             width: 100px;
@@ -21,6 +22,20 @@
 
         }
     </style>
+    <script>
+        function noImage(id){
+            let image=" #image"+id;
+            let video=" #video"+id;
+            $(image).remove();
+            $(video).css("visibility", "visible");
+        }
+        function noVideo(id){
+            let image="#image"+id;
+            let video="#video"+id;
+            $(video).remove();
+            $(image).css("visibility", "visible");
+        }
+    </script>
 </head>
 <body>
 <form action="insertServlet" method="post" enctype="multipart/form-data">
@@ -57,9 +72,9 @@
 <div class="message-content">
     <table class="table-main">
         <tr><td>Posted by: <%=topic.getOwner()%> => <span><%=topic.getTitle()%></span></td></tr>
-        <tr><td><img src="data:image/png;base64,<%=topic.getFile_byte()%>" alt="">
-            <video controls>
-            <source type="video/webm" src="data:video/webm;base64,<%=topic.getFile_byte()%>">
+        <tr><td><img src="data:image/png;base64,<%=topic.getFile_byte()%>" id="image<%=topic.getTid()%>" onerror="this.onerror=null;noImage('<%=topic.getTid()%>');">
+            <video controls id="video<%=topic.getTid()%>">
+            <source type="video/webm" src="data:video/webm;base64,<%=topic.getFile_byte()%>"  onerror="this.onerror=null;noVideo('<%=topic.getTid()%>');">
             </video>
         </td><td>  <%=topic.getMessage()%>
             <form action="redirectServlet" method="post"> <button type="submit" style="background-color:rgb(161, 161, 161);" name="tidCurrent" value="<%=topic.getTid()%>">Continue reading..</button></form></td></tr>

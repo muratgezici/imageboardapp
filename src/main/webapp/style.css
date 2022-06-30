@@ -90,13 +90,21 @@ input, textarea, option, button, select{
     width: 100px;
     height: 100px;
     object-fit: contain;
-
-
 }
 .message-content .table-main img{
     width: 150px;
     height: 150px;
     object-fit: contain;
+}
+.message-content .table-inner video{
+    width: 100px;
+    height: 100px;
+
+}
+.message-content .table-main video{
+    width: 150px;
+    height: 150px;
+
 }
 .nav-bar{
     margin:0px auto;

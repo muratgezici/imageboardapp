@@ -54,10 +54,10 @@ public class MongoDBTopic {
                         String owner = temp.getString("owner");
                         String password = temp.getString("password");
 
-
+                        String file_byte = temp.getString("imagebase64");
 
                         //ArrayList<String> tags = (ArrayList<String>) temp.getList("tags", String.class);
-                            Topic topic = new Topic(id,title,message,files,category,owner,password);
+                            Topic topic = new Topic(id,title,message,files,category,owner,password, file_byte);
                         return topic;
                     }
                 }

@@ -11,9 +11,18 @@ public class Comment {
     private String username;
     private String password;
     private int level;
+    private String file_byte;
+
+    public String getFile_byte() {
+        return file_byte;
+    }
+
+    public void setFile_byte(String file_byte) {
+        this.file_byte = file_byte;
+    }
 
 
-    public Comment(String cid, String tid, String reply_flag, String reply_cid, String title, String message, String files, String username, String password, int level) {
+    public Comment(String cid, String tid, String reply_flag, String reply_cid, String title, String message, String files, String username, String password, int level, String file_byte) {
         this.cid = cid;
         this.tid = tid;
         this.reply_flag = reply_flag;
@@ -24,9 +33,10 @@ public class Comment {
         this.username = username;
         this.password = password;
         this.level = level;
+        this.file_byte = file_byte;
     }
 
-    public Comment(String cid, String tid, String reply_flag, String title, String message, String files, String username, String password, int level) {
+    public Comment(String cid, String tid, String reply_flag, String title, String message, String files, String username, String password, int level, String file_byte) {
         this.cid = cid;
         this.tid = tid;
         this.reply_flag = reply_flag;
@@ -36,6 +46,7 @@ public class Comment {
         this.username = username;
         this.password = password;
         this.level = level;
+        this.file_byte = file_byte;
     }
 
     public String getCid() {

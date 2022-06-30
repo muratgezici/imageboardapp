@@ -20,19 +20,36 @@
 <body>
 <script>
     function replyVisibility(){
-        console.log("babaa");
         if($("#post-mode").prop('checked') == true){
-            console.log("adada");
+
             $(".replycheckbox").css("visibility", "visible");
             $("#categories").css("visibility", "hidden");
         }
         else{
             $(".replycheckbox").css("visibility", "hidden");
+            $(".replycheckbox").children().prop("checked", false);
             $("#categories").css("visibility", "visible");
         }
     }
+    function replyThis(id){
+        console.log("im here replythis!"+$("#replycid-"+id)+" "+$("#post-mode"));
 
-
+        $("#replycid-"+id).prop("checked", true);
+        $("#post-mode").prop('checked' ,true);
+        replyVisibility();
+    }
+    function noImage(id){
+        let image=" #image"+id;
+        let video=" #video"+id;
+        $(image).remove();
+        $(video).css("visibility", "visible");
+    }
+    function noVideo(id){
+        let image="#image"+id;
+        let video="#video"+id;
+        $(video).remove();
+        $(image).css("visibility", "visible");
+    }
 </script>
 <%
     String tidCurr = request.getParameter("tidCurrent");
@@ -42,7 +59,7 @@
     System.out.println("this is test value"+request.getParameter("tidCurrent1"));
 %>
 <form action="insertServlet" method="post" enctype="multipart/form-data">
-<div class="message-form">
+<div class="message-form" id="top">
     <table>
         <tr><td>Nickname:</td><td><input type="text" name="nickname" placeholder="nickname"></td></tr>
         <tr><td>Title:</td><td><input type="text" name="title" placeholder="title"></td></tr>
@@ -60,7 +77,7 @@
             </td>
         </tr>
         <tr><td>Images:</td><td><div id="imgdiv">
-            <input id="file_1" type="file">
+            <input id="file_1" name="file_1" type="file">
         </div></td></tr>
         <input type="hidden" name="tidCurrent" value="<%=tidCurr%>">
         <tr><td></td><td><button type="submit" name="jsplocation" value="topicitem">Post</button></td></tr>
@@ -76,11 +93,15 @@
     ArrayList<Comment> comments = (ArrayList<Comment>) MongoDBComment.MongoGetComments();
     %>
 <div class="message-content topic-content">
-    <table class="table-main">
-        <tr class="info-reply"><td>Posted by: <%=topic.getOwner()%> => <span><%=topic.getTitle()%></span></td><td class="replycheckbox" style="visibility: hidden"><input type="checkbox" name="replycid" value="topic:<%=topic.getTid()%>">Reply</td></tr>
-        <tr><td><img src="fb.png" alt=""></td>
+    <table class="table-main" id="replied-<%=topic.getTid()%>">
+        <tr class="info-reply"><td>Posted by: <%=topic.getOwner()%> => <span><%=topic.getTitle()%></span></td><td class="replycheckbox" style="visibility: hidden"><input type="radio" id='replycid-<%=topic.getTid()%>' name="replycid" value="topic:<%=topic.getTid()%>">Reply</td></tr>
+        <tr><td><img src="data:image/png;base64,<%=topic.getFile_byte()%>" id="image<%=topic.getTid()%>" onerror="this.onerror=null;noImage('<%=topic.getTid()%>');">
+            <video controls id="video<%=topic.getTid()%>">
+                <source type="video/webm" src="data:video/webm;base64,<%=topic.getFile_byte()%>"  onerror="this.onerror=null;noVideo('<%=topic.getTid()%>');">
+            </video></td>
             <td> <%=topic.getMessage()%></td></tr>
-        <tr><td></td><td colspan="2"><button>Edit</button><button>Delete</button></td></tr>
+        <tr><td></td><td colspan="2"><button>Edit</button><button>Delete</button>
+            <a onclick="replyThis('<%=topic.getTid()%>');" href="#top" on >Reply</a></td></tr>
     </table></div>
 
 <%
@@ -94,12 +115,17 @@ for(Comment comment:comments){
     if(comment.getTid().equalsIgnoreCase(tidCurr) && comment.getLevel()==1){
        %>
     <div class='message-content' style="background-color: rgb(156, 156, 156);">
-        <table class='table-main ' style="background-color: rgb(156, 156, 156);">
-            <tr><td colspan='2'>Posted by: <%=comment.getUsername()%> =>  <span><%=comment.getTitle()%></span></td><td class='replycheckbox' style='visibility: hidden'><input type='checkbox' name='replycid' value='comment:<%=comment.getCid()%>'>Reply</td></tr>
-            <tr><td><img src='fb.png' alt=""></td><td><%=comment.getMessage()%></td></tr>
-            <tr><td></td><td colspan='2'><button>Edit</button><button>Delete</button></td></tr>
+        <table class='table-main ' id='replied-<%=comment.getCid()%>' style="background-color: rgb(156, 156, 156);">
+            <tr><td colspan='2'>Posted by: <%=comment.getUsername()%> =>  <span><%=comment.getTitle()%></span> replied to:
+                <a href='#replied-<%=topic.getTid()%>'> (<%=topic.getTitle()%>)</a></td><td class='replycheckbox' style='visibility: hidden'><input type='radio' id='replycid-<%=comment.getCid()%>' name='replycid' value='comment:<%=comment.getCid()%>'>Reply</td></tr>
+            <tr><td><img src='data:image/png;base64,<%=comment.getFile_byte()%>' id='image<%=comment.getCid()%>' onerror="this.onerror=null;noImage('<%=comment.getCid()%>');">
+                <video controls id='video<%=comment.getCid()%>'>
+                    <source type='video/webm' src='data:video/webm;base64,<%=comment.getFile_byte()%>'  onerror="this.onerror=null;noVideo('<%=comment.getCid()%>');">
+                </video></td><td><%=comment.getMessage()%></td></tr>
+            <tr><td></td><td colspan='2'><button>Edit</button><button>Delete</button>
+                <a onclick="replyThis('<%=comment.getCid()%>');" href="#top" >Reply</a></td></tr>
 
-          <% String html=  printTable(comments, "comment:"+comment.getCid(), 2, maxlevel, tidCurr, "", comment.getTitle()); %>
+          <% String html=  printTable(comments, "comment:"+comment.getCid(), 2, maxlevel, tidCurr, "", comment.getTitle(), comment.getCid()); %>
             <%=html%>
         </table>
     </div>
@@ -110,7 +136,7 @@ for(Comment comment:comments){
 </html>
 
 <%!
-public String printTable(ArrayList<Comment> comments,String cid, int level,int maxlevel,String tidCurr, String html, String replied_comment){
+public String printTable(ArrayList<Comment> comments,String cid, int level,int maxlevel,String tidCurr, String html, String replied_comment, String prevCid){
    String returnhtml="";
     for(Comment comment:comments){
         if(comment.getTid().equalsIgnoreCase(tidCurr)){
@@ -119,16 +145,18 @@ public String printTable(ArrayList<Comment> comments,String cid, int level,int m
             System.out.println("inside inner table loop");
             int tablewidth = 950-level*50;
             int color = 161 - level*5;
-        html+= "  <tr style=' background-color: rgb("+color+","+color+", "+color+");'>  <table class='table-inner' style='width:"+tablewidth+"px; background-color: rgb("+color+","+color+", "+color+");border-collapse:collapse'>" +
-                "            <tr><td colspan='2'>Posted by:"+ comment.getUsername()+" => <span>"+comment.getTitle()+"</span> replied to: ("+replied_comment+") </td><td class='replycheckbox' style='visibility: hidden'><input type='checkbox' name='replycid' value='comment:"+comment.getCid()+"'>Reply</td></tr>" +
-" <tr> <td><img src='fb.png' alt=\"\"></td> <td>"+comment.getMessage()+"</td></tr> " +
-" <tr> <td></td> <td colspan='2'> <button>Edit</button> <button>Delete</button> </td> </tr>  ";
+        html+= "  <tr id='replied-"+comment.getCid()+"' style=' background-color: rgb("+color+","+color+", "+color+");'>  <table class='table-inner' style='width:"+tablewidth+"px; background-color: rgb("+color+","+color+", "+color+");border-collapse:collapse'>" +
+                "            <tr><td colspan='2'>Posted by:"+ comment.getUsername()+" => <span>"+comment.getTitle()+"</span> <a href='#replied-"+prevCid+"'> ("+replied_comment+")</a> </td><td class='replycheckbox' style='visibility: hidden'><input type='radio' id='replycid-"+comment.getCid()+"' name='replycid' value='comment:"+comment.getCid()+"'>Reply</td></tr>" +
+" <tr> <td><img src='data:image/png;base64,"+comment.getFile_byte()+"' id='image"+comment.getCid()+"' onerror=\"this.onerror=null;noImage('"+comment.getCid()+"');\">" +
+" <video controls id='video"+comment.getCid()+"'>" + " <source type='video/webm' src='data:video/webm;base64,"+comment.getFile_byte()+"'onerror=\"this.onerror=null;noVideo('"+comment.getCid()+"');\"> " + " </video>"+ "</td><td>"+comment.getMessage()+"</td></tr> " +
+" <tr> <td></td> <td colspan='2'> <button>Edit</button> <button>Delete</button> " +
+                "<a onclick=\"replyThis('"+comment.getCid()+"')\" href='#top'>Reply</a></td> </tr>  ";
 
         int level1 = level+1;
         String cid1 = "comment:"+comment.getCid();
         if(level<=maxlevel){
             System.out.println("Before return html "+returnhtml+" level: "+level1);
-            html = printTable(comments,cid1, level1, maxlevel, tidCurr, html, comment.getTitle());
+            html = printTable(comments,cid1, level1, maxlevel, tidCurr, html, comment.getTitle(), comment.getCid());
             level1=level;
             System.out.println("After return html "+returnhtml+" level: "+level1);
         }

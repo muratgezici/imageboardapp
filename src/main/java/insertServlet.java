@@ -46,7 +46,7 @@ public class insertServlet extends HttpServlet {
             String password = m.getParameter("password");
             String replycid = m.getParameter("replycid");
             String cid= "";
-                cid = MongoDBComment.mongoInsertComment(tid2,replyflag,replycid,title,message,files,owner,password);
+                cid = MongoDBComment.mongoInsertComment(tid2,replyflag,replycid,title,message,files,owner,password, file_1);
         }
 
 

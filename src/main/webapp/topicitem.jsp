@@ -50,6 +50,36 @@
         $(video).remove();
         $(image).css("visibility", "visible");
     }
+    function openPassword(cid){
+        let passzone = "#"+cid+" .modifypasswordzone";
+        console.log($(passzone)+" "+passzone);
+        $(passzone).css("visibility", "visible");
+    }
+    function openModifyButtons(cid){
+        let passzone = "#"+cid+" .modifypasswordzone";
+        let linkzone = "#"+cid+" .modifylinkszone";
+        $(passzone).css("visibility", "hidden");
+        $(linkzone).css("visibility", "visible");
+    }
+    function login(pass1 , cid) {
+        let pass = event.target.value;
+        $.ajax({
+            url: "ModifyCheckServlet",
+            method: 'GET',
+            data: {password: pass, password1: pass1 },
+            success: function(responseText){
+                    let s = responseText;
+                    if(s=="success"){
+                        alert(s);
+                        openModifyButtons(cid);
+                    }
+                    else{
+                        alert(s);
+                    }
+
+                }
+        });
+    }
 </script>
 <%
     String tidCurr = request.getParameter("tidCurrent");
@@ -100,7 +130,11 @@
                 <source type="video/webm" src="data:video/webm;base64,<%=topic.getFile_byte()%>"  onerror="this.onerror=null;noVideo('<%=topic.getTid()%>');">
             </video></td>
             <td> <%=topic.getMessage()%></td></tr>
-        <tr class="isDeleted-<%=topic.isDeleted()%>"><td></td><td colspan="2"><a href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=topic.getTid()%>&mode=edit">Edit</a><a href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=topic.getTid()%>&mode=delete">Delete</a>
+        <tr class="isDeleted-<%=topic.isDeleted()%> " id="modifytr-<%=topic.getTid()%>"><td></td><td colspan='2'><td colspan="2"><a onclick="openPassword('modifytr-<%=topic.getTid()%>');" href="#replied-<%=topic.getTid()%>">Modify</a>
+            <input class="modifypasswordzone"
+                   type="text" onkeydown="return event.key != 'Enter';" style="visibility:hidden;" placeholder="password" onchange="login('<%=topic.getPassword()%>', 'modifytr-<%=topic.getTid()%>')">
+            <a class="modifylinkszone" style="visibility:hidden;" href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=topic.getTid()%>&mode=edit">Edit</a><a class="modifylinkszone" style="visibility:hidden;" href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=topic.getTid()%>&mode=delete">Delete</a>
+
             <a onclick="replyThis('<%=topic.getTid()%>');" href="#top" on >Reply</a></td></tr>
     </table></div>
 
@@ -122,7 +156,11 @@ for(Comment comment:comments){
                 <video controls id='video<%=comment.getCid()%>'>
                     <source type='video/webm' src='data:video/webm;base64,<%=comment.getFile_byte()%>'  onerror="this.onerror=null;noVideo('<%=comment.getCid()%>');">
                 </video></td><td><%=comment.getMessage()%></td></tr>
-            <tr class="isDeleted-<%=comment.isDeleted()%>"><td></td><td colspan='2'><td colspan="2"><a href="EditDeleteServlet?tid=<%=comment.getTid()%>&cid=<%=comment.getCid()%>&mode=edit">Edit</a><a href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=comment.getCid()%>&mode=delete">Delete</a>
+            <tr class="isDeleted-<%=comment.isDeleted()%> " id="modifytr-<%=comment.getCid()%>"><td></td><td colspan='2'><td colspan="2"><a onclick="openPassword('modifytr-<%=comment.getCid()%>');" href="#replied-<%=comment.getCid()%>">Modify</a>
+                <input class="modifypasswordzone"
+                    type="text" onkeydown="return event.key != 'Enter';" style="visibility:hidden;" placeholder="password" onchange="login('<%=comment.getPassword()%>', 'modifytr-<%=comment.getCid()%>')">
+                <a class="modifylinkszone" style="visibility:hidden;" href="EditDeleteServlet?tid=<%=comment.getTid()%>&cid=<%=comment.getCid()%>&mode=edit">Edit</a><a class="modifylinkszone" style="visibility:hidden;" href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=comment.getCid()%>&mode=delete">Delete</a>
+
                 <a onclick="replyThis('<%=comment.getCid()%>');" href="#top" >Reply</a></td></tr>
 
           <% String html=  printTable(comments, "comment:"+comment.getCid(), 2, maxlevel, tidCurr, "", comment.getTitle(), comment.getCid()); %>
@@ -149,8 +187,11 @@ public String printTable(ArrayList<Comment> comments,String cid, int level,int m
                 "            <tr><td colspan='2'>Posted by:"+ comment.getUsername()+" => <span>"+comment.getTitle()+"</span> <a href='#replied-"+prevCid+"'> ("+replied_comment+")</a> </td><td class='replycheckbox isDeleted-"+comment.isDeleted()+"' style='visibility: hidden'><input type='radio' id='replycid-"+comment.getCid()+"' name='replycid' value='comment:"+comment.getCid()+"'>Reply</td></tr>" +
 " <tr> <td><img src='data:image/png;base64,"+comment.getFile_byte()+"' id='image"+comment.getCid()+"' onerror=\"this.onerror=null;noImage('"+comment.getCid()+"');\">" +
 " <video controls id='video"+comment.getCid()+"'>" + " <source type='video/webm' src='data:video/webm;base64,"+comment.getFile_byte()+"'onerror=\"this.onerror=null;noVideo('"+comment.getCid()+"');\"> " + " </video>"+ "</td><td>"+comment.getMessage()+"</td></tr> " +
-" <tr class='isDeleted-"+comment.isDeleted()+"'> <td></td> <td colspan='2'> <a href='EditDeleteServlet?tid="+comment.getTid()+"&cid="+comment.getCid()+"&mode=edit'>Edit</a><a href='EditDeleteServlet?tid="+comment.getTid()+"&cid="+comment.getCid()+"&mode=delete'>Delete</a> " +
-                "<a onclick=\"replyThis('"+comment.getCid()+"')\" href='#top'>Reply</a></td> </tr>  ";
+                "<tr class='isDeleted-"+comment.isDeleted()+" ' id='modifytr-"+comment.getCid()+"'><td></td><td colspan='2'><td colspan='2'><a onclick=\"openPassword('modifytr-"+comment.getCid()+"');\" href='#replied-"+comment.getCid()+"'>Modify</a>"+
+"<input class='modifypasswordzone'"+
+       "type='text' onkeydown=\"return event.key != 'Enter';\" style='visibility:hidden;' placeholder='password' onchange=\"login('"+comment.getPassword()+"', 'modifytr-"+comment.getCid()+"')\">"+
+"<a class='modifylinkszone' style='visibility:hidden;' href='EditDeleteServlet?tid="+comment.getTid()+"&cid="+comment.getCid()+"'&mode=edit'>Edit</a><a class='modifylinkszone' style='visibility:hidden;' href='EditDeleteServlet?tid="+comment.getTid()+"&cid="+comment.getCid()+"&mode=delete'>Delete</a>"+
+        "<a onclick=\"replyThis('"+comment.getCid()+"')\" href='#top'>Reply</a></td> </tr>  ";
 
         int level1 = level+1;
         String cid1 = "comment:"+comment.getCid();

@@ -76,6 +76,13 @@ public class insertServlet extends HttpServlet {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/topicitem.jsp");
             dispatcher.forward(request,response);
         }
+        else if(jsploc.equalsIgnoreCase("topicitem")){
+            String tid1 = m.getParameter("tidCurrent");
+            System.out.println("tid topicitem : "+tid1);
+            session.setAttribute("tidCurrent", tid1);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/topicitem.jsp");
+            dispatcher.forward(request,response);
+        }
         else{
             if(flag != null){
                 String tid1 = m.getParameter("tidCurrent");

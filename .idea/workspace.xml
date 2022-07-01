@@ -9,16 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9c8f6c6-0f71-4f37-94f9-67779673197f" name="Changes" comment="edit/delete added. (there is a bug to fix)">
+    <list default="true" id="c9c8f6c6-0f71-4f37-94f9-67779673197f" name="Changes" comment="edit/delete added, bugs fixed. only password verification left.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ModifyCheckServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/db/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/Comment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/db/MongoDBComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/MongoDBComment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/db/MongoDBTopic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/MongoDBTopic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/db/Topic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/db/Topic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/insertServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/insertServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/redirectServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/redirectServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/edit.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/edit.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/topicitem.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/topicitem.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -60,7 +55,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/MuratStajDosyaları/imageboardapp",
+    "last_opened_file_path": "E:/MuratStajDosyaları/ecommerceapp",
     "list.type.of.created.stylesheet": "CSS",
     "project.structure.last.edited": "Facets",
     "project.structure.proportion": "0.15",
@@ -189,7 +184,7 @@
       <workItem from="1656584034487" duration="6000" />
       <workItem from="1656584116934" duration="8853000" />
       <workItem from="1656594066327" duration="4829000" />
-      <workItem from="1656654242266" duration="2659000" />
+      <workItem from="1656654242266" duration="7619000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1656313102136</created>
@@ -254,7 +249,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656598939135</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="edit/delete added, bugs fixed. only password verification left.">
+      <created>1656656959941</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1656656959941</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -280,6 +282,7 @@
     <MESSAGE value="videos and images are in database and are shown.&#10;(size and visibility css not included)" />
     <MESSAGE value="video/image sizes fixed. Anchors created. Reply to comment variations added." />
     <MESSAGE value="edit/delete added. (there is a bug to fix)" />
-    <option name="LAST_COMMIT_MESSAGE" value="edit/delete added. (there is a bug to fix)" />
+    <MESSAGE value="edit/delete added, bugs fixed. only password verification left." />
+    <option name="LAST_COMMIT_MESSAGE" value="edit/delete added, bugs fixed. only password verification left." />
   </component>
 </project>

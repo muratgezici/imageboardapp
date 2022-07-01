@@ -69,24 +69,25 @@ public class insertServlet extends HttpServlet {
         //redirect part --------------------------------------------------------------------------------------------
         String jsploc = m.getParameter("jsplocation");
         if(jsploc.equalsIgnoreCase("topics")){
-            System.out.println("tid here is :"+tid123);
+
             session.setAttribute("tidCurrent", tid123);
+
+            System.out.println("tid in jsploc topics: "+tid123);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/topicitem.jsp");
             dispatcher.forward(request,response);
         }
         else{
             if(flag != null){
                 String tid1 = m.getParameter("tidCurrent");
-                System.out.println("inside insert tid: "+tid1);
+                System.out.println("tid not topics flag exists: "+tid1);
                 session.setAttribute("tidCurrent", tid1);
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/topicitem.jsp");
                 dispatcher.forward(request,response);
             }
             else{
                 System.out.println("comingfrom: "+comingfrom);
-                    String tid12 = m.getParameter("tidCurrent");
-                    session.setAttribute("tidCurrent", tid12);
-
+                    session.setAttribute("tidCurrent", tid123);
+                System.out.println("tid not topics flag is null: "+tid123);
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/topicitem.jsp");
                 dispatcher.forward(request,response);
             }

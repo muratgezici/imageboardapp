@@ -53,11 +53,12 @@ public class MongoDBTopic {
                         String category = temp.getString("category");
                         String owner = temp.getString("owner");
                         String password = temp.getString("password");
+                        boolean isDeleted = temp.getBoolean("isDeleted");
 
                         String file_byte = temp.getString("imagebase64");
 
                         //ArrayList<String> tags = (ArrayList<String>) temp.getList("tags", String.class);
-                            Topic topic = new Topic(id,title,message,files,category,owner,password, file_byte);
+                            Topic topic = new Topic(id,title,message,files,category,owner,password, file_byte, isDeleted);
                         return topic;
                     }
                 }
@@ -82,12 +83,12 @@ public class MongoDBTopic {
                 String category = temp.getString("category");
                 String owner = temp.getString("owner");
                 String password = temp.getString("password");
-
+                boolean isDeleted = temp.getBoolean("isDeleted");
                 String file_byte = temp.getString("imagebase64");
 
 
 
-                Topic topic = new Topic(id,title,message,files,category,owner,password, file_byte);
+                Topic topic = new Topic(id,title,message,files,category,owner,password, file_byte, isDeleted);
                 alltopics.add(topic);
                 }
 
@@ -158,7 +159,7 @@ public class MongoDBTopic {
 
                     append("title", title).append("message", message).
                     append("files", oid).append("category", category).
-                    append("owner", owner).append("password", password).append("imagebase64", encoded);
+                    append("owner", owner).append("password", password).append("imagebase64", encoded).append("isDeleted", false);
 
             collection.insertOne(document1);
             ObjectId id = document1.getObjectId("_id");
@@ -180,7 +181,7 @@ public static void MongoDBDeleteTopic(String _id){
                 Document updatedVal = new Document().
                         append("title", "title has been deleted").append("message", "message has been deleted").
                         append("files", null).append("category", " ").
-                        append("owner", " ").append("password", " ").append("imagebase64", "");
+                        append("owner", " ").append("password", " ").append("imagebase64", "").append("isDeleted",true);
                 Bson updateOp = new Document("$set", updatedVal);
                collection.updateOne(temp,updateOp);
             }

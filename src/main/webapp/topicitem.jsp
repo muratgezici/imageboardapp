@@ -22,7 +22,7 @@
     function replyVisibility(){
         if($("#post-mode").prop('checked') == true){
 
-            $(".replycheckbox").css("visibility", "visible");
+            $(".replycheckbox.isDeleted-false").css("visibility", "visible");
             $("#categories").css("visibility", "hidden");
         }
         else{
@@ -94,13 +94,13 @@
     %>
 <div class="message-content topic-content">
     <table class="table-main" id="replied-<%=topic.getTid()%>">
-        <tr class="info-reply"><td>Posted by: <%=topic.getOwner()%> => <span><%=topic.getTitle()%></span></td><td class='replycheckbox' style='visibility: hidden'><input type='radio' id='replycid-<%=comment.getCid()%>' name='replycid' value='comment:<%=comment.getCid()%>'>Reply</td></tr>
+        <tr class="info-reply"><td>Posted by: <%=topic.getOwner()%> => <span><%=topic.getTitle()%></span></td><td class='replycheckbox isDeleted-<%=topic.isDeleted()%>' style='visibility: hidden'><input type='radio' id='replycid-<%=topic.getTid()%>' name='replycid' value='comment:<%=topic.getTid()%>'>Reply</td></tr>
         <tr><td><img src="data:image/png;base64,<%=topic.getFile_byte()%>" id="image<%=topic.getTid()%>" onerror="this.onerror=null;noImage('<%=topic.getTid()%>');">
             <video controls id="video<%=topic.getTid()%>">
                 <source type="video/webm" src="data:video/webm;base64,<%=topic.getFile_byte()%>"  onerror="this.onerror=null;noVideo('<%=topic.getTid()%>');">
             </video></td>
             <td> <%=topic.getMessage()%></td></tr>
-        <tr><td></td><td colspan="2"><a href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=topic.getTid()%>&mode=edit">Edit</a><a href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=topic.getTid()%>&mode=delete">Delete</a>
+        <tr class="isDeleted-<%=topic.isDeleted()%>"><td></td><td colspan="2"><a href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=topic.getTid()%>&mode=edit">Edit</a><a href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=topic.getTid()%>&mode=delete">Delete</a>
             <a onclick="replyThis('<%=topic.getTid()%>');" href="#top" on >Reply</a></td></tr>
     </table></div>
 
@@ -117,12 +117,12 @@ for(Comment comment:comments){
     <div class='message-content' style="background-color: rgb(156, 156, 156);">
         <table class='table-main ' id='replied-<%=comment.getCid()%>' style="background-color: rgb(156, 156, 156);">
             <tr><td colspan='2'>Posted by: <%=comment.getUsername()%> =>  <span><%=comment.getTitle()%></span> replied to:
-                <a href='#replied-<%=topic.getTid()%>'> (<%=topic.getTitle()%>)</a></td><td class='replycheckbox' style='visibility: hidden'><input type='radio' id='replycid-<%=comment.getCid()%>' name='replycid' value='comment:<%=comment.getCid()%>'>Reply</td></tr>
+                <a href='#replied-<%=topic.getTid()%>'> (<%=topic.getTitle()%>)</a></td><td class='replycheckbox isDeleted-<%=comment.isDeleted()%>' style='visibility: hidden'><input type='radio' id='replycid-<%=comment.getCid()%>' name='replycid' value='comment:<%=comment.getCid()%>'>Reply</td></tr>
             <tr><td><img src='data:image/png;base64,<%=comment.getFile_byte()%>' id='image<%=comment.getCid()%>' onerror="this.onerror=null;noImage('<%=comment.getCid()%>');">
                 <video controls id='video<%=comment.getCid()%>'>
                     <source type='video/webm' src='data:video/webm;base64,<%=comment.getFile_byte()%>'  onerror="this.onerror=null;noVideo('<%=comment.getCid()%>');">
                 </video></td><td><%=comment.getMessage()%></td></tr>
-            <tr><td></td><td colspan='2'><td colspan="2"><a href="EditDeleteServlet?tid=<%=comment.getTid()%>&cid=<%=comment.getCid()%>&mode=edit">Edit</a><a href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=comment.getCid()%>&mode=delete">Delete</a>
+            <tr class="isDeleted-<%=comment.isDeleted()%>"><td></td><td colspan='2'><td colspan="2"><a href="EditDeleteServlet?tid=<%=comment.getTid()%>&cid=<%=comment.getCid()%>&mode=edit">Edit</a><a href="EditDeleteServlet?tid=<%=topic.getTid()%>&cid=<%=comment.getCid()%>&mode=delete">Delete</a>
                 <a onclick="replyThis('<%=comment.getCid()%>');" href="#top" >Reply</a></td></tr>
 
           <% String html=  printTable(comments, "comment:"+comment.getCid(), 2, maxlevel, tidCurr, "", comment.getTitle(), comment.getCid()); %>
@@ -146,10 +146,10 @@ public String printTable(ArrayList<Comment> comments,String cid, int level,int m
             int tablewidth = 950-level*50;
             int color = 161 - level*5;
         html+= "  <tr id='replied-"+comment.getCid()+"' style=' background-color: rgb("+color+","+color+", "+color+");'>  <table class='table-inner' style='width:"+tablewidth+"px; background-color: rgb("+color+","+color+", "+color+");border-collapse:collapse'>" +
-                "            <tr><td colspan='2'>Posted by:"+ comment.getUsername()+" => <span>"+comment.getTitle()+"</span> <a href='#replied-"+prevCid+"'> ("+replied_comment+")</a> </td><td class='replycheckbox' style='visibility: hidden'><input type='radio' id='replycid-"+comment.getCid()+"' name='replycid' value='comment:"+comment.getCid()+"'>Reply</td></tr>" +
+                "            <tr><td colspan='2'>Posted by:"+ comment.getUsername()+" => <span>"+comment.getTitle()+"</span> <a href='#replied-"+prevCid+"'> ("+replied_comment+")</a> </td><td class='replycheckbox isDeleted-"+comment.isDeleted()+"' style='visibility: hidden'><input type='radio' id='replycid-"+comment.getCid()+"' name='replycid' value='comment:"+comment.getCid()+"'>Reply</td></tr>" +
 " <tr> <td><img src='data:image/png;base64,"+comment.getFile_byte()+"' id='image"+comment.getCid()+"' onerror=\"this.onerror=null;noImage('"+comment.getCid()+"');\">" +
 " <video controls id='video"+comment.getCid()+"'>" + " <source type='video/webm' src='data:video/webm;base64,"+comment.getFile_byte()+"'onerror=\"this.onerror=null;noVideo('"+comment.getCid()+"');\"> " + " </video>"+ "</td><td>"+comment.getMessage()+"</td></tr> " +
-" <tr> <td></td> <td colspan='2'> <a href='EditDeleteServlet?tid="+comment.getTid()+"&cid="+comment.getCid()+"&mode=edit'>Edit</a><a href='EditDeleteServlet?tid="+comment.getTid()+"&cid="+comment.getCid()+"&mode=delete'>Delete</a> " +
+" <tr class='isDeleted-"+comment.isDeleted()+"'> <td></td> <td colspan='2'> <a href='EditDeleteServlet?tid="+comment.getTid()+"&cid="+comment.getCid()+"&mode=edit'>Edit</a><a href='EditDeleteServlet?tid="+comment.getTid()+"&cid="+comment.getCid()+"&mode=delete'>Delete</a> " +
                 "<a onclick=\"replyThis('"+comment.getCid()+"')\" href='#top'>Reply</a></td> </tr>  ";
 
         int level1 = level+1;

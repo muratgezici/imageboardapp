@@ -43,8 +43,8 @@
             Comment comment = (Comment) session.getAttribute("object_instance");%>
     <div class="message-form">
         <table>
-            <tr><td>Nickname:</td><td><input type="text" name="nickname" placeholder="nickname" value="<%=comment.getUsername()%>"></td></tr>
-            <tr><td>Title:</td><td><input type="text" name="title" placeholder="title" value="<%=comment.getTitle()%>"></td></tr>
+            <tr><td>Nickname:</td><td><input type="text" name="nickname" placeholder="nickname" value="<%=comment.getUsername()%>" readonly></td></tr>
+            <tr><td>Title:</td><td><input type="text" name="title" placeholder="title" value="<%=comment.getTitle()%>" readonly></td></tr>
 
             <tr><td>Images:</td><td><%--suppress XmlDuplicatedId --%><div id="imgdiv">
 <%--suppress XmlDuplicatedId --%>

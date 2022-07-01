@@ -12,6 +12,15 @@ public class Comment {
     private String password;
     private int level;
     private String file_byte;
+    private boolean isDeleted;
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
     public String getFile_byte() {
         return file_byte;
@@ -22,7 +31,7 @@ public class Comment {
     }
 
 
-    public Comment(String cid, String tid, String reply_flag, String reply_cid, String title, String message, String files, String username, String password, int level, String file_byte) {
+    public Comment(String cid, String tid, String reply_flag, String reply_cid, String title, String message, String files, String username, String password, int level, String file_byte, boolean isDeleted) {
         this.cid = cid;
         this.tid = tid;
         this.reply_flag = reply_flag;
@@ -34,9 +43,10 @@ public class Comment {
         this.password = password;
         this.level = level;
         this.file_byte = file_byte;
+        this.isDeleted = isDeleted;
     }
 
-    public Comment(String cid, String tid, String reply_flag, String title, String message, String files, String username, String password, int level, String file_byte) {
+    public Comment(String cid, String tid, String reply_flag, String title, String message, String files, String username, String password, int level, String file_byte, boolean isDeleted) {
         this.cid = cid;
         this.tid = tid;
         this.reply_flag = reply_flag;
@@ -47,6 +57,7 @@ public class Comment {
         this.password = password;
         this.level = level;
         this.file_byte = file_byte;
+        this.isDeleted = isDeleted;
     }
 
     public String getCid() {

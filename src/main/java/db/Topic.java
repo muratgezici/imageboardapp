@@ -11,7 +11,15 @@ public class Topic {
     private String owner;
     private String password;
     private String file_byte;
+    private boolean isDeleted=false;
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
     public String getTid() {
         return tid;
@@ -102,7 +110,7 @@ public class Topic {
         this.password = password;
     }
 
-    public Topic(String tid, String title, String message, ObjectId filereferences, String category, String owner, String password) {
+    public Topic(String tid, String title, String message, ObjectId fileId, String category, String owner, String password) {
         this.tid = tid;
         this.title = title;
         this.message = message;
@@ -112,7 +120,7 @@ public class Topic {
         this.password = password;
     }
 
-    public Topic(String tid, String title, String message, ObjectId fileId, String category, String owner, String password, String file_byte) {
+    public Topic(String tid, String title, String message, ObjectId fileId, String category, String owner, String password, String file_byte, boolean isDeleted) {
         this.tid = tid;
         this.title = title;
         this.message = message;
@@ -121,5 +129,6 @@ public class Topic {
         this.owner = owner;
         this.password = password;
         this.file_byte = file_byte;
+        this.isDeleted = isDeleted;
     }
 }

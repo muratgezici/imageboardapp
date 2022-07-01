@@ -143,3 +143,6 @@ input, textarea, option, button, select{
 .info-reply td:last-of-type{
     text-align: right;
 }
+.isDeleted-true{
+    visibility:hidden;
+}

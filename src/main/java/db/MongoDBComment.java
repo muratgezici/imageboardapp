@@ -51,14 +51,14 @@ public class MongoDBComment {
                     int level = temp.getInteger("level");
                     String add_date = temp.getString("add_date");
                     String file_byte = temp.getString("imagebase64");
-
+                    boolean isDeleted = temp.getBoolean("isDeleted");
                     //ArrayList<String> tags = (ArrayList<String>) temp.getList("tags", String.class);
                     if (replyflag.equalsIgnoreCase("true")) {
                         String replycid = temp.getString("replycid");
-                        Comment comment = new Comment(id, tid, replyflag, replycid, title, message, files, owner, password, level, file_byte);
+                        Comment comment = new Comment(id, tid, replyflag, replycid, title, message, files, owner, password, level, file_byte, isDeleted);
                         return comment;
                     } else {
-                        Comment comment = new Comment(id, tid, replyflag, title, message, files, owner, password, level, file_byte);
+                        Comment comment = new Comment(id, tid, replyflag, title, message, files, owner, password, level, file_byte, isDeleted);
                         return comment;
                     }
                 }
@@ -86,14 +86,15 @@ public class MongoDBComment {
                 String owner = temp.getString("username");
                 String password = temp.getString("password");
                 String file_byte = temp.getString("imagebase64");
+                boolean isDeleted = temp.getBoolean("isDeleted");
                 int level = temp.getInteger("level");
 
                 if (replyflag.equalsIgnoreCase("true")) {
                     String replycid = temp.getString("reply_cid");
-                    Comment comment = new Comment(id, tid, replyflag, replycid, title, message, files, owner, password, level, file_byte);
+                    Comment comment = new Comment(id, tid, replyflag, replycid, title, message, files, owner, password, level, file_byte, isDeleted);
                     allcomments.add(comment);
                 } else {
-                    Comment comment = new Comment(id, tid, replyflag, title, message, files, owner, password, level, file_byte);
+                    Comment comment = new Comment(id, tid, replyflag, title, message, files, owner, password, level, file_byte, isDeleted);
                     allcomments.add(comment);
                 }
 
@@ -133,7 +134,7 @@ public class MongoDBComment {
                 append("tid", tid).append("reply_flag", reply_flag).
                 append("reply_cid", reply_cid).append("title", title).
                 append("message", message).append("files", files).
-                append("username", username).append("password", password).append("level", level1).append("imagebase64", encoded);
+                append("username", username).append("password", password).append("level", level1).append("imagebase64", encoded).append("isDeleted",false);
 
         collection.insertOne(document1);
         ObjectId id = document1.getObjectId("_id");
@@ -154,7 +155,7 @@ public class MongoDBComment {
                             append("tid", tid).append("reply_flag", reply_flag).
                             append("reply_cid", reply_cid).append("title", title).
                             append("message", "Message deleted").append("files", " ").
-                            append("username", username).append("password", " ").append("imagebase64", " ");
+                            append("username", username).append("password", " ").append("imagebase64", " ").append("isDeleted", true);
                     Bson updateOp = new Document("$set", updatedVal);
                     collection.updateOne(temp, updateOp);
                 }
